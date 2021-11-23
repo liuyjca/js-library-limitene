@@ -11,22 +11,6 @@ const path = require('path');
 // Don't put anything in /pub that you don't want the public to have access to!
 app.use(express.static(path.join(__dirname, '/pub')))
 
-// Let's make some express 'routes'
-// Express has something called a Router, which 
-// takes specific HTTP requests and handles them
-// based on the HTTP method and URL
-
-// Let's make a route for an HTTP GET request to the 
-// 'root' of our app (i.e. top level domain '/')
-
-app.get('/', (req, res) => {
-	// sending a string
-	//res.send('This should be the root route!')
-
-	//sending some HTML
-	res.send('<h1>This should be the root route!</h1>')
-})
-
 // Error codes
 app.get('/problem', (req, res) => {
 	// You can indicate a status code to send back
