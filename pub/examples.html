@@ -15,7 +15,7 @@
 
      <!-- Load any CSS before the JS in case you need to access styles in your scripts. -->
      <!-- <link rel="stylesheet" type="text/css" href="someStylesheet.css"> -->
-     <link rel="stylesheet" type="text/css" href="../css/limitene.css"> 
+     <link rel="stylesheet" type="text/css" href="css/limitene.css"> 
 
    	<!-- If you don't use either 'async' or 'defer', the HTML parsing/DOM loading is blocked until the script is downloaded and executed. -->
     <!-- Since it is the top script on the page, it will block 
@@ -29,14 +29,14 @@
     <!-- First we load jquery from a Google CDN (content delivery network). -->
     <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <script defer type="text/javascript" src='../js/limiteneEvent.js'></script>
-    <script defer type="text/javascript" src='../js/limiteneImgDisplay.js'></script>
-    <script defer type="text/javascript" src='../js/limiteneTextDisplay.js'></script>
+    <script defer type="text/javascript" src='js/limiteneEvent.js'></script>
+    <script defer type="text/javascript" src='js/limiteneImgDisplay.js'></script>
+    <script defer type="text/javascript" src='js/limiteneTextDisplay.js'></script>
 
     <!-- Then we load a script that depends on jQuery -->
-    <script defer type="text/javascript" src='../js/limitene.js'></script>
+    <script defer type="text/javascript" src='js/limitene.js'></script>
     <!-- Then we load a script that depends on our libraries (and jQuery) -->
-    <script defer type="text/javascript" src='../js/examples.js'></script>
+    <script defer type="text/javascript" src='js/examples.js'></script>
 
     <!-- 
     - 'async' states that it is safe to download the script without blocking 
