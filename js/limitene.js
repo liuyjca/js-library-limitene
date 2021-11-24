@@ -13,6 +13,15 @@ function Limitene() {
 
 Limitene.prototype = {
     makeTimeline: function(container, centeredInContainer, direction, imgDisplay, descrDisplay, hasProgress = false, scaled = false) {
+        if (this.nodes.length > 0) {
+            this.edges = []
+            this.nodes = []
+            this.imgContainers = []
+            this.textContainers = []
+            this.selected = null
+            this.textIsDisplayed = true
+        }
+
         if (!container) {
             container = document.body
         }
@@ -26,7 +35,7 @@ Limitene.prototype = {
         const secondImgContainer = document.createElement("div")
         const firstTextContainer = document.createElement("div")
         const secondTextContainer = document.createElement("div")
-        mainContainer.style.width = "fit-content"
+        mainContainer.style.width = container.clientWidth
         mainContainer.style.paddingLeft = `${imgSize}px`
         mainContainer.style.paddingRight = `${imgSize}px`
         mainContainer.append(firstTextContainer)
@@ -37,6 +46,9 @@ Limitene.prototype = {
         container.append(mainContainer)
         if (centeredInContainer) {
             mainContainer.style.margin = "0 auto"
+            if (direction === "horizontal") {
+                timelineContainer.style.margin = "0 auto"
+            }
         }
 
         let edgeLength = 0
@@ -102,7 +114,6 @@ Limitene.prototype = {
                     throw new Error("Invalid direction passed in");
                 }
             }
-            console.log(event.title)
             
             newNode.append(innerNode)
             newNodeContainer.append(newNode)
@@ -118,30 +129,33 @@ Limitene.prototype = {
             console.log("No events found")
         } else {
             let textWidth = 0
-            if (direction === "horizontal") {
-                textWidth = (this.textIsDisplayed ? 120 : 0)
-            } else {
-                textWidth = (this.textIsDisplayed ? 120 : 0)
-            }
             
             const firstNodeLeft = this.nodes[0].getBoundingClientRect().left
-            firstTextContainer.style.width = `${textWidth}px`
-            secondTextContainer.style.width = `${textWidth}px`
 
             if (direction === "horizontal") {
+                textWidth = this.textIsDisplayed ? edgeLength * 0.8 : 0
+
                 if (textWidth < imgSize & firstNodeLeft - imgSize <= 0) {
-                    timelineContainer.style.marginLeft = `${imgSize}px`
+                    timelineContainer.style.paddingLeft = `${imgSize}px`
                     timelineContainer.style.paddingRight = `${imgSize}px`
-                } else if (textWidth >= imgSize & firstNodeLeft - textWidth/2 <= 0) {
-                    timelineContainer.style.paddingLeft = `${textWidth/2}px`
-                    timelineContainer.style.paddingRight = `${textWidth/2}px`
+                } else if (textWidth >= imgSize & firstNodeLeft - textWidth/2 + imgSize <= 0) {
+                        timelineContainer.style.paddingLeft = `${textWidth/4}px`
+                        timelineContainer.style.paddingRight = `${textWidth/4}px`
                 }
+            } else {
+
+                textWidth = (this.textIsDisplayed ? 120 : 0)
+
+                firstTextContainer.style.width = `${textWidth}px`
+                secondTextContainer.style.width = `${textWidth}px`
             }
 
             addImages(this.events, this.nodes, nodeSize, lineThickness, imgSize, direction, imgDisplay, firstImgContainer, secondImgContainer)
-            this.imgContainers.push([firstImgContainer, secondImgContainer])
-            addText(this.events, this.nodes, nodeSize, lineThickness, textWidth, imgSize, direction, imgDisplay, firstTextContainer, secondTextContainer)
-            this.textContainers.push([firstTextContainer, secondTextContainer])
+            this.imgContainers.push(firstImgContainer, secondImgContainer)
+            if (direction === "horizontal") {
+                addText(this.events, this.nodes, nodeSize, lineThickness, textWidth, direction, imgDisplay, firstTextContainer, secondTextContainer)
+                this.textContainers.push(firstTextContainer, secondTextContainer)
+            }
         }
     },
 
@@ -151,27 +165,12 @@ Limitene.prototype = {
     },
 
     toggleImagesOff: function() {
-        this.imgContainers.map((imgContainer) => {
-            imgContainer[0].style.display = "none"
-            imgContainer[1].style.display = "none"
-        })
+        $(this.imgContainers[0]).hide()
+        $(this.imgContainers[1]).hide()
     },
 
     toggleImagesOn: function() {
-        this.imgContainers.map((imgContainer) => {
-            imgContainer[0].style.display = "block"
-            imgContainer[1].style.display = "block"
-        })
-    },
-
-    updateProgress: function(eventIndex) {
-
+        $(this.imgContainers[0]).show()
+        $(this.imgContainers[1]).show()
     }
-}
-
-function createTimelineNode() {
-}
-
-function createTimelineEdge() {
-
 }

@@ -1,11 +1,8 @@
 "use strict"
 function addImages(events, nodes, nodeSize, lineThickness, imgSize, direction, imgDisplay, firstImgContainer, secondImgContainer) {
-    let start, end = 0
-
-    if (direction === "horizontal") {
-        firstImgContainer.style.marginLeft = `-${imgSize/2 + nodeSize/2 + lineThickness}px`
-        secondImgContainer.style.marginLeft = `-${imgSize/2 + nodeSize/2 + lineThickness}px`
-    }
+    let start = 0
+    let end = 0
+    let nullCount = 0
 
     events.map((event, index) => {
         if (event.img) {
@@ -71,6 +68,8 @@ function addImages(events, nodes, nodeSize, lineThickness, imgSize, direction, i
             nodes[index].onmouseleave = ()=> {
                 timelineImg.style.filter = "brightness(100%)"
             }
+        } else {
+            nullCount++
         }
     })
     if (direction === "horizontal") {
@@ -79,5 +78,12 @@ function addImages(events, nodes, nodeSize, lineThickness, imgSize, direction, i
     } else {
         firstImgContainer.style.height = `${end - start + imgSize}px`
         secondImgContainer.style.height = `${end - start + imgSize}px`
+    }
+
+    if (nullCount === events.length) {
+        firstImgContainer.style.height = "0px"
+        firstImgContainer.style.padding = "5px"
+        secondImgContainer.style.height = "0px"
+        secondImgContainer.style.padding = "5px"
     }
 }
