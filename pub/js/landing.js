@@ -10,6 +10,7 @@ const subheading = document.createElement("h2")
 const buttonDiv = document.createElement("div")
 const examplesButton = document.createElement("button")
 const docButton = document.createElement("button")
+const footerCredentials = document.createElement("div")
 
 headingDiv.append(heading)
 headingDiv.append(subheading)
@@ -30,6 +31,10 @@ examplesButton.textContent = "- examples -"
 docButton.className = "doc_button"
 docButton.onclick = function(){ document.location = "documentation.html"}
 docButton.textContent = "- documentation -"
+
+document.body.append(footerCredentials)
+footerCredentials.className = "landing_footer"
+footerCredentials.innerHTML = "Created by <a href='https://github.com/liuyjca'>Yingjia Liu</a>, 2021"
 
 // Showcase some empty timelines
 const demoDiv1 = document.createElement("div")
