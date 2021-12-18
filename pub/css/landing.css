@@ -1,0 +1,89 @@
+.heading_div {
+  width: 100%;
+  margin-top: 200px;
+  text-align: center;
+}
+
+.heading {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 400;
+}
+
+.subheading {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 200;
+  font-size: 12pt;
+  margin-top: 20px;
+}
+
+.button_div {
+  display: flex;
+  align-items: center;
+  width: 20%;
+  height: 80px;
+  margin: 0 auto;
+  margin-top: 30px;
+  border-top: 1px solid gray;
+}
+
+.examples_button {
+  position: relative;
+  padding: 5px;
+  border: none;
+  background-color: rgb(240, 255, 206);
+  text-decoration: none;
+  margin: 0 auto;
+}
+
+.examples_button:hover {
+  cursor: pointer;
+  /* filter: drop-shadow(0 0 0.75rem rgb(238, 243, 228)); */
+  filter: drop-shadow(0px 0px 0.4rem #d0d4ca)
+}
+
+.doc_button {
+  position: relative;
+  padding: 5px;
+  border: none;
+  background-color: rgb(219, 213, 255);
+  text-decoration: none;
+  margin: 0 auto;
+}
+
+.doc_button:hover {
+  cursor: pointer;
+  filter: drop-shadow(0px 0px 0.4rem #cfcad4)
+}
+
+.demo_div1 {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  z-index: -1;
+  top: 60%;
+  left: -100px;
+  width: 120%;
+  height: 200px;
+}
+
+.demo_div2 {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  z-index: -2;
+  top: 0%;
+  left: 100px;
+  width: 20%;
+  height: 110%;
+}
+
+.demo_div3 {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  z-index: -3;
+  top: -100px;
+  right: 100px;
+  width: 20%;
+  height: 50%;
+}

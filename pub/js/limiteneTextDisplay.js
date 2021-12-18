@@ -1,7 +1,6 @@
-"use strict"
-function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength, textWidth, direction, imgDisplay, firstTimestampContainer, secondTimestampContainer, firstTitleContainer, secondTitleContainer) {
-    let maxMarginTop = 0
-    let maxMarginBottom = 0
+"use strict";
+
+function _addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength, textWidth, direction, imgDisplay, firstTimestampContainer, secondTimestampContainer, firstTitleContainer, secondTitleContainer) {
     let timestamp_start = 0
     let timestamp_end = 0
     let title_start = 0
@@ -19,6 +18,24 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
         timeLabel.className = "time_label"
         titleLabel.className = "title_label"
 
+        if (direction === "horizontal") {
+            if (index === 0) {
+                timestamp_start = bounds.left + window.scrollX
+                title_start = bounds.left + window.scrollX
+            } else if (index === events.length - 1) {
+                timestamp_end = bounds.left + window.scrollX
+                title_end = bounds.left + window.scrollX
+            }
+        } else {
+            if (index === 0) {
+                timestamp_start = bounds.top + window.scrollY
+                title_start = bounds.top + window.scrollY
+            } else if (index === events.length - 1) {
+                timestamp_end = bounds.top + window.scrollY
+                title_end = bounds.top + window.scrollY
+            }
+        }
+
         if (event.time) {
             timeLabel.textContent = `${event.time}`
             timeLabel.style.width = `${textWidth}px`
@@ -31,12 +48,6 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
                     timeLabel.style.left = `${index * (edgeLength + nodeSize + lineThickness*2) - textWidth/2 + nodeSize/2 + lineThickness}px`
                 }
 
-                if (index === 0) {
-                    timestamp_start = bounds.left + window.scrollX
-                } else if (index === events.length - 1) {
-                    timestamp_end = bounds.left + window.scrollX
-                }
-
                 if (imgDisplay === "top") {
                     firstTimestampContainer.append(timeLabel)
                     secondTimestampContainer.style.height = "0px"
@@ -44,7 +55,6 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
 
                     offset = (timeLabel.clientHeight - 20) > 0 ? timeLabel.clientHeight - 20 : 0
                     timeLabel.style.marginTop = `-${offset}px`
-                    maxMarginTop = offset > maxMarginTop ? offset : maxMarginTop
 
                 } else if (imgDisplay === "bottom") {
                     firstTimestampContainer.style.height = "0px"
@@ -56,7 +66,6 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
 
                         offset = (timeLabel.clientHeight - 20) > 0 ? timeLabel.clientHeight - 20 : 0
                         timeLabel.style.marginTop = `-${offset}px`
-                        maxMarginTop = offset > maxMarginTop ? offset : maxMarginTop
                     } else {
                         secondTimestampContainer.append(timeLabel)
                     }
@@ -67,12 +76,6 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
             } else {
                 timeLabel.style.position = "relative"
                 timeLabel.style.float = "none"
-
-                if (index === 0) {
-                    timestamp_start = bounds.top + window.scrollY
-                } else if (index === events.length - 1) {
-                    timestamp_end = bounds.top + window.scrollY
-                }
 
                 let sum = 0
                 timeLabels.map((label) => {
@@ -100,7 +103,8 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
                     throw new Error("Invalid image display mode passed in")
                 }
                 timeLabel.style.top = `${(bounds.top + window.scrollY) -
-                    (firstNodeTop + window.scrollY) - sum - timeLabel.clientHeight / 2 + nodeSize / 2}px`
+                    (firstNodeTop + window.scrollY) - sum - timeLabel.clientHeight / 2 +
+                    nodeSize / 2 + lineThickness}px`
                 timeLabels.push(timeLabel)  
             }
         } else {
@@ -113,17 +117,10 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
 
             if (direction === "horizontal") {
                 let offset = 0
-                // titleLabel.style.left = `${bounds.left + window.scrollX - textWidth / 2 + nodeSize / 2 + lineThickness}px`
                 if (!readjusted) {
                     titleLabel.style.left = `${index * (edgeLength + nodeSize + lineThickness*2)}px`
                 } else {
                     titleLabel.style.left = `${index * (edgeLength + nodeSize + lineThickness*2) - textWidth/2 + nodeSize/2 + lineThickness}px`
-                }
-
-                if (index === 0) {
-                    title_start = bounds.left + window.scrollX
-                } else if (index === events.length - 1) {
-                    title_end = bounds.left + window.scrollX
                 }
 
                 if (imgDisplay === "top") {
@@ -133,7 +130,6 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
 
                     offset = (timeLabel.clientHeight + titleLabel.clientHeight) > 0 ? timeLabel.clientHeight + titleLabel.clientHeight : 0
                     titleLabel.style.marginTop = `-${offset}px`
-                    maxMarginTop = offset + maxMarginTop > maxMarginTop ? titleLabel.clientHeight + maxMarginTop / 2 : maxMarginTop
 
                 } else if (imgDisplay === "bottom") {
                     titleLabel.style.marginTop = `${timeLabel.clientHeight + 10}px`
@@ -143,7 +139,6 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
                     secondTitleContainer.append(titleLabel)
 
                     offset = (timeLabel.clientHeight + titleLabel.clientHeight) > 0 ? timeLabel.clientHeight + titleLabel.clientHeight : 0
-                    maxMarginBottom = offset > maxMarginBottom ? offset : 0
 
                 } else if (imgDisplay === "alternate") {
                     if (index % 2 === 0) {
@@ -151,13 +146,13 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
 
                         offset = (timeLabel.clientHeight + titleLabel.clientHeight) > 0 ? timeLabel.clientHeight + titleLabel.clientHeight : 0
                         titleLabel.style.marginTop = `-${offset}px`
-                        maxMarginTop = offset + maxMarginTop > maxMarginTop ? titleLabel.clientHeight + maxMarginTop / 2 : maxMarginTop
+
                     } else {
                         secondTitleContainer.style.paddingBottom = `${timeLabel.clientHeight + 30}px`
                         secondTitleContainer.append(titleLabel)
                         
                         offset = (timeLabel.clientHeight + titleLabel.clientHeight) > 0 ? timeLabel.clientHeight + titleLabel.clientHeight : 0
-                        maxMarginBottom = offset > maxMarginBottom ? offset : 0
+                        titleLabel.style.marginTop = `${offset - 5}px`
                     }
                 } else {
                     throw new Error("Invalid image display mode passed in")
@@ -165,12 +160,6 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
             } else {
                 titleLabel.style.position = "relative"
                 titleLabel.style.float = "none"
-
-                if (index === 0) {
-                    title_start = bounds.top + window.scrollY
-                } else if (index === events.length - 1) {
-                    title_end = bounds.top + window.scrollY
-                }
 
                 let sum = 0
                 titleLabels.map((label) => {
@@ -198,15 +187,14 @@ function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength,
                     throw new Error("Invalid image display mode passed in")
                 }
                 titleLabel.style.top = `${(bounds.top + window.scrollY) -
-                    (firstNodeTop + window.scrollY) - sum - titleLabel.clientHeight / 2 + nodeSize / 2}px`
+                    (firstNodeTop + window.scrollY) - sum - titleLabel.clientHeight / 2 + 
+                    nodeSize / 2 + lineThickness}px`
                 titleLabels.push(titleLabel)
             }
         } else {
             nullTitleCount++
         }
     })
-    firstTitleContainer.style.paddingTop = `${maxMarginTop ? maxMarginTop + 50 : 0}px`
-    secondTitleContainer.style.paddingBottom = `${maxMarginBottom ? maxMarginBottom + 50 : 0}px`
 
     if (direction === "horizontal") {
         firstTimestampContainer.style.width = `${timestamp_end - timestamp_start + textWidth}px`

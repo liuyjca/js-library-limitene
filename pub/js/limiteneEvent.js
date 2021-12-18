@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 class TimelineEvent {
     constructor(time, title, desc, img) {
         this.time = time

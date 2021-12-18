@@ -1,5 +1,6 @@
-"use strict"
-function addImages(events, nodes, nodeSize, lineThickness, imgSize, direction, imgDisplay, firstImgContainer, secondImgContainer) {
+"use strict";
+
+function _addImages(events, nodes, nodeSize, lineThickness, imgSize, direction, imgDisplay, firstImgContainer, secondImgContainer) {
     let start = 0
     let end = 0
     let nullCount = 0
@@ -8,8 +9,8 @@ function addImages(events, nodes, nodeSize, lineThickness, imgSize, direction, i
     let emptyImages = []
 
     events.map((event, index) => {
-        const first_node_left = nodes[0].getBoundingClientRect().left
-        const first_node_top = nodes[0].getBoundingClientRect().top
+        const firstNodeLeft = nodes[0].getBoundingClientRect().left
+        const firstNodeTop = nodes[0].getBoundingClientRect().top
         const bounds = nodes[index].getBoundingClientRect()
         const timelineImg = document.createElement("img")
         if (event.img) {
@@ -55,7 +56,7 @@ function addImages(events, nodes, nodeSize, lineThickness, imgSize, direction, i
 
             if (imgDisplay === "top") {
                 timelineImg.style.left = `${(bounds.left + window.scrollX) -
-                    (first_node_left + window.scrollX) -
+                    (firstNodeLeft + window.scrollX) -
                     index * imgSize + lineThickness / 2}px`
 
                 firstImgContainer.append(timelineImg)
@@ -64,7 +65,7 @@ function addImages(events, nodes, nodeSize, lineThickness, imgSize, direction, i
 
             } else if (imgDisplay === "bottom") {
                 timelineImg.style.left = `${(bounds.left + window.scrollX) -
-                    (first_node_left + window.scrollX) -
+                    (firstNodeLeft + window.scrollX) -
                     index * imgSize + lineThickness / 2}px`
 
                 firstImgContainer.style.height = "0px"
@@ -73,7 +74,7 @@ function addImages(events, nodes, nodeSize, lineThickness, imgSize, direction, i
 
             } else if (imgDisplay === "alternate") {
                 timelineImg.style.left = `${(bounds.left + window.scrollX) -
-                    (first_node_left + window.scrollX) -
+                    (firstNodeLeft + window.scrollX) -
                     Math.floor(index / 2) * imgSize + lineThickness / 2}px`
 
                 if (index % 2 === 0) {
@@ -93,21 +94,21 @@ function addImages(events, nodes, nodeSize, lineThickness, imgSize, direction, i
 
             if (imgDisplay === "left") {
                 timelineImg.style.top = `${(bounds.top + window.scrollY) -
-                    (first_node_top + window.scrollY) -
-                    index * (imgSize + 2.5)}px`
+                    (firstNodeTop + window.scrollY) -
+                    index * (imgSize + 3.5)}px`
 
                 firstImgContainer.append(timelineImg)
 
             } else if (imgDisplay === "right") {
                 timelineImg.style.top = `${(bounds.top + window.scrollY) -
-                    (first_node_top + window.scrollY) -
-                    index * (imgSize + 2)}px`
+                    (firstNodeTop + window.scrollY) -
+                    index * (imgSize + 3.5)}px`
 
                 secondImgContainer.append(timelineImg)
             } else if (imgDisplay === "alternate") {
                 timelineImg.style.top = `${(bounds.top + window.scrollY) -
-                    (first_node_top + window.scrollY) -
-                    Math.floor(index / 2) * (imgSize + 2)}px`
+                    (firstNodeTop + window.scrollY) -
+                    Math.floor(index / 2) * (imgSize + 3.5)}px`
                 if (index % 2 === 0) {
                     firstImgContainer.append(timelineImg)
                 } else {
