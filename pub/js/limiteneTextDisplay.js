@@ -1,12 +1,23 @@
 "use strict"
-function addText(events, nodes, nodeSize, lineThickness, textWidth, direction, imgDisplay, firstTextContainer, secondTextContainer) {
-    let maxMarginTop = 0 
+function addText(events, nodes, nodeSize, lineThickness, readjusted, edgeLength, textWidth, direction, imgDisplay, firstTimestampContainer, secondTimestampContainer, firstTitleContainer, secondTitleContainer) {
+    let maxMarginTop = 0
     let maxMarginBottom = 0
+    let timestamp_start = 0
+    let timestamp_end = 0
+    let title_start = 0
+    let title_end = 0
+    let nullTimestampCount = 0
+    let nullTitleCount = 0
+    let timeLabels = []
+    let titleLabels = []
 
     events.map((event, index) => {
+        const firstNodeTop = nodes[0].getBoundingClientRect().top
         const bounds = nodes[index].getBoundingClientRect()
         const timeLabel = document.createElement("h1")
         const titleLabel = document.createElement("p")
+        timeLabel.className = "time_label"
+        titleLabel.className = "title_label"
 
         if (event.time) {
             timeLabel.textContent = `${event.time}`
@@ -14,49 +25,86 @@ function addText(events, nodes, nodeSize, lineThickness, textWidth, direction, i
 
             if (direction === "horizontal") {
                 let offset = 0
-                timeLabel.style.left = `${bounds.left + window.scrollX - textWidth/2 + nodeSize/2 + lineThickness}px`
+                if (!readjusted) {
+                    timeLabel.style.left = `${index * (edgeLength + nodeSize + lineThickness*2)}px`
+                } else {
+                    timeLabel.style.left = `${index * (edgeLength + nodeSize + lineThickness*2) - textWidth/2 + nodeSize/2 + lineThickness}px`
+                }
+
+                if (index === 0) {
+                    timestamp_start = bounds.left + window.scrollX
+                } else if (index === events.length - 1) {
+                    timestamp_end = bounds.left + window.scrollX
+                }
 
                 if (imgDisplay === "top") {
-                    firstTextContainer.append(timeLabel)
-                    secondTextContainer.style.padding = "0px"
-                    
+                    firstTimestampContainer.append(timeLabel)
+                    secondTimestampContainer.style.height = "0px"
+                    secondTimestampContainer.style.padding = "5px"
+
                     offset = (timeLabel.clientHeight - 20) > 0 ? timeLabel.clientHeight - 20 : 0
                     timeLabel.style.marginTop = `-${offset}px`
                     maxMarginTop = offset > maxMarginTop ? offset : maxMarginTop
 
                 } else if (imgDisplay === "bottom") {
-                    firstTextContainer.style.padding = "0px"
-                    secondTextContainer.append(timeLabel)
+                    firstTimestampContainer.style.height = "0px"
+                    firstTimestampContainer.style.padding = "5px"
+                    secondTimestampContainer.append(timeLabel)
                 } else if (imgDisplay === "alternate") {
                     if (index % 2 === 0) {
-                        firstTextContainer.append(timeLabel)
+                        firstTimestampContainer.append(timeLabel)
 
                         offset = (timeLabel.clientHeight - 20) > 0 ? timeLabel.clientHeight - 20 : 0
                         timeLabel.style.marginTop = `-${offset}px`
                         maxMarginTop = offset > maxMarginTop ? offset : maxMarginTop
                     } else {
-                        secondTextContainer.append(timeLabel)
+                        secondTimestampContainer.append(timeLabel)
                     }
                 } else {
                     throw new Error("Invalid image display mode passed in")
                 }
-                
+
             } else {
+                timeLabel.style.position = "relative"
+                timeLabel.style.float = "none"
+
+                if (index === 0) {
+                    timestamp_start = bounds.top + window.scrollY
+                } else if (index === events.length - 1) {
+                    timestamp_end = bounds.top + window.scrollY
+                }
+
+                let sum = 0
+                timeLabels.map((label) => {
+                    sum += label.clientHeight
+                }) 
+
                 if (imgDisplay === "left") {
-                    firstTextContainer.append(timeLabel)
+                    firstTimestampContainer.append(timeLabel)
                 } else if (imgDisplay === "right") {
-                    secondTextContainer.append(timeLabel)
+                    secondTimestampContainer.append(timeLabel)
                 } else if (imgDisplay === "alternate") {
+                    sum = 0
                     if (index % 2 === 0) {
-                        firstTextContainer.append(timeLabel)
+                        timeLabels.map((label, index) => {
+                            if (index % 2 === 0) {sum += label.clientHeight}
+                        }) 
+                        firstTimestampContainer.append(timeLabel)
                     } else {
-                        secondTextContainer.append(timeLabel)
+                        timeLabels.map((label, index) => {
+                            if (index % 2 > 0) {sum += label.clientHeight}
+                        }) 
+                        secondTimestampContainer.append(timeLabel)
                     }
                 } else {
                     throw new Error("Invalid image display mode passed in")
                 }
-                timeLabel.style.top = `${bounds.top + window.scrollY + nodeSize - lineThickness - timeLabel.clientHeight/2}px`
+                timeLabel.style.top = `${(bounds.top + window.scrollY) -
+                    (firstNodeTop + window.scrollY) - sum - timeLabel.clientHeight / 2 + nodeSize / 2}px`
+                timeLabels.push(timeLabel)  
             }
+        } else {
+            nullTimestampCount++
         }
 
         if (event.title) {
@@ -65,58 +113,132 @@ function addText(events, nodes, nodeSize, lineThickness, textWidth, direction, i
 
             if (direction === "horizontal") {
                 let offset = 0
-                titleLabel.style.left = `${bounds.left + window.scrollX - textWidth/2 + nodeSize/2 + lineThickness}px`
+                // titleLabel.style.left = `${bounds.left + window.scrollX - textWidth / 2 + nodeSize / 2 + lineThickness}px`
+                if (!readjusted) {
+                    titleLabel.style.left = `${index * (edgeLength + nodeSize + lineThickness*2)}px`
+                } else {
+                    titleLabel.style.left = `${index * (edgeLength + nodeSize + lineThickness*2) - textWidth/2 + nodeSize/2 + lineThickness}px`
+                }
+
+                if (index === 0) {
+                    title_start = bounds.left + window.scrollX
+                } else if (index === events.length - 1) {
+                    title_end = bounds.left + window.scrollX
+                }
 
                 if (imgDisplay === "top") {
-                    firstTextContainer.append(titleLabel)
-                    secondTextContainer.style.padding = "0px"
+                    firstTitleContainer.append(titleLabel)
+                    secondTitleContainer.style.height = "0px"
+                    secondTitleContainer.style.padding = "5px"
 
                     offset = (timeLabel.clientHeight + titleLabel.clientHeight) > 0 ? timeLabel.clientHeight + titleLabel.clientHeight : 0
                     titleLabel.style.marginTop = `-${offset}px`
-                    maxMarginTop = offset + maxMarginTop > maxMarginTop ? titleLabel.clientHeight + maxMarginTop/2 : maxMarginTop
-                    
+                    maxMarginTop = offset + maxMarginTop > maxMarginTop ? titleLabel.clientHeight + maxMarginTop / 2 : maxMarginTop
+
                 } else if (imgDisplay === "bottom") {
                     titleLabel.style.marginTop = `${timeLabel.clientHeight + 10}px`
-                    firstTextContainer.style.padding = "0px"
-                    secondTextContainer.style.paddingBottom = `${timeLabel.clientHeight + 30}px`
-                    secondTextContainer.append(titleLabel)
+                    firstTitleContainer.style.height = "0px"
+                    firstTitleContainer.style.padding = "5px"
+                    secondTitleContainer.style.paddingBottom = `${timeLabel.clientHeight + 30}px`
+                    secondTitleContainer.append(titleLabel)
 
                     offset = (timeLabel.clientHeight + titleLabel.clientHeight) > 0 ? timeLabel.clientHeight + titleLabel.clientHeight : 0
                     maxMarginBottom = offset > maxMarginBottom ? offset : 0
 
                 } else if (imgDisplay === "alternate") {
                     if (index % 2 === 0) {
-                        firstTextContainer.append(titleLabel)
+                        firstTitleContainer.append(titleLabel)
 
                         offset = (timeLabel.clientHeight + titleLabel.clientHeight) > 0 ? timeLabel.clientHeight + titleLabel.clientHeight : 0
                         titleLabel.style.marginTop = `-${offset}px`
-                        maxMarginTop = offset + maxMarginTop > maxMarginTop ? titleLabel.clientHeight + maxMarginTop/2 : maxMarginTop
+                        maxMarginTop = offset + maxMarginTop > maxMarginTop ? titleLabel.clientHeight + maxMarginTop / 2 : maxMarginTop
                     } else {
-                        secondTextContainer.style.paddingBottom = `${timeLabel.clientHeight + 30}px`
-                        secondTextContainer.append(titleLabel)
-                        titleLabel.style.marginTop = `${timeLabel.clientHeight + 10}px`
+                        secondTitleContainer.style.paddingBottom = `${timeLabel.clientHeight + 30}px`
+                        secondTitleContainer.append(titleLabel)
+                        
+                        offset = (timeLabel.clientHeight + titleLabel.clientHeight) > 0 ? timeLabel.clientHeight + titleLabel.clientHeight : 0
+                        maxMarginBottom = offset > maxMarginBottom ? offset : 0
                     }
                 } else {
                     throw new Error("Invalid image display mode passed in")
                 }
             } else {
+                titleLabel.style.position = "relative"
+                titleLabel.style.float = "none"
+
+                if (index === 0) {
+                    title_start = bounds.top + window.scrollY
+                } else if (index === events.length - 1) {
+                    title_end = bounds.top + window.scrollY
+                }
+
+                let sum = 0
+                titleLabels.map((label) => {
+                    sum += label.clientHeight
+                })
+
                 if (imgDisplay === "left") {
-                    firstTextContainer.append(titleLabel)
+                    firstTitleContainer.append(titleLabel)
                 } else if (imgDisplay === "right") {
-                    secondTextContainer.append(titleLabel)
+                    secondTitleContainer.append(titleLabel)
                 } else if (imgDisplay === "alternate") {
+                    sum = 0
                     if (index % 2 === 0) {
-                        firstTextContainer.append(titleLabel)
+                        titleLabels.map((label, index) => {
+                            if (index % 2 === 0) {sum += label.clientHeight}
+                        })
+                        firstTitleContainer.append(titleLabel)
                     } else {
-                        secondTextContainer.append(titleLabel)
+                        titleLabels.map((label, index) => {
+                            if (index % 2 > 0) {sum += label.clientHeight}
+                        })
+                        secondTitleContainer.append(titleLabel)
                     }
                 } else {
                     throw new Error("Invalid image display mode passed in")
                 }
-                titleLabel.style.top = `${bounds.top + window.scrollY + nodeSize - lineThickness - titleLabel.clientHeight/2}px`
+                titleLabel.style.top = `${(bounds.top + window.scrollY) -
+                    (firstNodeTop + window.scrollY) - sum - titleLabel.clientHeight / 2 + nodeSize / 2}px`
+                titleLabels.push(titleLabel)
             }
+        } else {
+            nullTitleCount++
         }
     })
-    firstTextContainer.style.paddingTop = `${maxMarginTop ? maxMarginTop + 50 : 0}px`
-    secondTextContainer.style.paddingBottom = `${maxMarginBottom ? maxMarginBottom + 50 : 0}px`
+    firstTitleContainer.style.paddingTop = `${maxMarginTop ? maxMarginTop + 50 : 0}px`
+    secondTitleContainer.style.paddingBottom = `${maxMarginBottom ? maxMarginBottom + 50 : 0}px`
+
+    if (direction === "horizontal") {
+        firstTimestampContainer.style.width = `${timestamp_end - timestamp_start + textWidth}px`
+        secondTimestampContainer.style.width = `${timestamp_end - timestamp_start + textWidth}px`
+        firstTitleContainer.style.width = `${title_end - timestamp_start + textWidth}px`
+        secondTitleContainer.style.width = `${title_end - timestamp_start + textWidth}px`
+    } else {
+        firstTimestampContainer.style.height = `${timestamp_end - timestamp_start}px`
+        secondTimestampContainer.style.height = `${timestamp_end - timestamp_start}px`
+        firstTitleContainer.style.height = `${title_end - title_start}px`
+        secondTitleContainer.style.height = `${title_end - title_start}px`
+        
+        firstTimestampContainer.style.paddingRight = "10px"
+        secondTimestampContainer.style.paddingLeft = "10px"
+        firstTitleContainer.style.paddingRight = "10px"
+        secondTitleContainer.style.paddingLeft = "10px"
+    }
+
+    if (nullTitleCount === events.length) {
+        firstTitleContainer.style.height = "0px"
+        firstTitleContainer.style.padding = "0px"
+        secondTitleContainer.style.height = "0px"
+        secondTitleContainer.style.padding = "0px"
+    }
+
+    if (nullTimestampCount === events.length) {
+        firstTimestampContainer.style.height = "0px"
+        firstTimestampContainer.style.padding = "5px"
+        secondTimestampContainer.style.height = "0px"
+        secondTimestampContainer.style.padding = "5px"
+
+        firstTitleContainer.style.paddingBottom = "0px"
+        secondTitleContainer.style.paddingTop = "0px"
+    }
 }

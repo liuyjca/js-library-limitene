@@ -1,0 +1,7 @@
+
+.DS_Store
+node_modules/
+package-lock.json
+pub/.DS_Store
+pub/img/.DS_Store
+pub/js/.DS_Store
