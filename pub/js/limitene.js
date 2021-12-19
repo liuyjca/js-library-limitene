@@ -22,7 +22,6 @@
         this.imgDisplay = ""
         this.displayOptions = [true, true]
         this.progress = -2
-        this.progressEditable = false
     }
 
     /* Private properties and functions */
@@ -142,7 +141,6 @@
         lmtnObj.hasGradient = lmtnObj.hasGradient
         lmtnObj.container.innerHTML = ""
         lmtnObj.progress = lmtnObj.progress
-        lmtnObj.progressEditable = lmtnObj.progressEditable
         lmtnObj.makeTimeline(lmtnObj.container, lmtnObj.direction, lmtnObj.imgDisplay, lmtnObj.displayOptions)
     }
 
@@ -188,22 +186,34 @@
 
     Limitene.prototype = {
         makeTimeline: function (container, direction, imgDisplay, displayOptions) {
-            this.container = container
-            this.direction = direction
-            this.imgDisplay = imgDisplay
-
-            if (this.nodes.length > 0) {
-                this.edges = []
-                this.nodes = []
-                this.imgContainers = []
-                this.textContainers = []
-                this.selected = null
-                this.textIsDisplayed = true
-            }
-
             if (!container) {
                 container = document.body
             }
+            this.container = container
+            if (!direction) {
+                direction = "horizontal"
+                imgDisplay = "top"
+            }
+            this.direction = direction
+            if(!imgDisplay) {
+                if (direction === "horizontal") {
+                    imgDisplay = "top"
+                } else if (direction === "vertical") {
+                    imgDisplay = "left"
+                } else {
+                    throw new Error("Invalid direction passed in");
+                }
+            }
+            this.imgDisplay = imgDisplay
+            if(displayOptions) {
+                this.displayOptions = displayOptions
+            }
+
+            if (this.nodes.length > 0) {
+                _redraw(this)
+                return;
+            }
+            
             const nodeSize = 10
             const lineThickness = 2
             const imgSize = 40
@@ -233,10 +243,6 @@
             mainContainer.append(secondTimestampContainer)
             mainContainer.append(secondTitleContainer)
             container.append(mainContainer)
-
-            if(displayOptions) {
-                this.displayOptions = displayOptions
-            }
 
             if (this.displayOptions[0]) {
                 _toggleTimesOn([firstTimestampContainer, secondTimestampContainer])
@@ -379,7 +385,7 @@
                 } else {
                     throw new Error("Invalid direction passed in");
                 }
-                tooltip.textContent = `${event.desc}`
+                tooltip.textContent = `${event.desc ? event.desc : "no description given"}`
                 newNode.append(tooltip)
                 newNode.append(innerNode)
                 newNodeContainer.append(newNode)
@@ -561,11 +567,6 @@
 
                 this.progress = eventIndex
             }
-        },
-
-        setProgressUserEditable: function (bool) {
-            this.progressEditable = bool
-            _redraw(this)
         }
     }
 

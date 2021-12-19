@@ -1,0 +1,27 @@
+.documentation_title {
+  color: rgb(92, 81, 129);
+  font-weight: 400;
+}
+
+.code_div {
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: left;
+  border: 1px solid gray;
+  background-color: rgb(242, 238, 255);
+  width: 80%;
+  padding: 8px;
+}
+
+p { 
+  margin-left: 10px;
+  line-height: 25px;
+}
+
+.inline_code {
+  font-family: 'Courier New', Courier, monospace;
+  margin-left: 5px;
+  background-color: rgb(242, 238, 255);
+}
