@@ -18,10 +18,66 @@
 p { 
   margin-left: 10px;
   line-height: 25px;
+  font-size: 13pt;
+}
+
+.code_div p {
+  font-size: 12pt;
 }
 
 .inline_code {
   font-family: 'Courier New', Courier, monospace;
   margin-left: 5px;
   background-color: rgb(242, 238, 255);
+}
+
+th {
+  font-size: 14pt;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  font-weight: 400;
+  width: 210px;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: #efffe1;
+}
+
+th:nth-child(1), td:nth-child(1) {
+  width: 120px;
+}
+
+th:nth-child(3), td:nth-child(3) {
+  width: 100px;
+}
+
+th:nth-child(4), td:nth-child(4) {
+  width: 350px;
+}
+
+table {
+  margin-top: 30px;
+  margin-left: 10px;
+  border-collapse: collapse;
+}
+
+ul {
+  display: block;
+  list-style-type: disc;
+  text-align: left;
+  margin-left: 35%;
+}
+
+li {
+  display: list-item;
+}
+
+.shifted_ul {
+  width: 55%;
+  margin-left: 22%;
 }

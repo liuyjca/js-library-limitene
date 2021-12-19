@@ -19,7 +19,8 @@ document.body.append(documentationDiv)
 
 $(documentationDiv).css({
   width: "80%",
-  margin: "0 auto"
+  margin: "0 auto",
+  marginBottom: "100px"
 })
 
 $(div1).css({
@@ -48,6 +49,7 @@ title.textContent = "Library Documentation"
 $(section1).css({
   color: "rgb(92, 81, 129)",
   fontWeight: 400,
+  fontSize: "21pt",
   marginBottom: "15px"
 })
 section1.textContent = "Getting Started"
@@ -78,7 +80,7 @@ codeSnippet5.textContent = "<script src='/path/to/limiteneTextDisplay.js'></scri
 const par2 = document.createElement("p")
 div2.append(par2)
 par2.innerHTML = "Create an instance of a Limitene timeline object using <span class='inline_code'>new Limitene()</span>, \
-then add events to your new timeline by calling <span class='inline_code'>makeEvent(..options..)</span> (read API section for details on options). \
+then add events to your new timeline by calling <span class='inline_code'>makeEvent(..options..)</span> (read API section for details on options).<br>\
 Add your events in the order you want them to appear left to right or top to bottom in the timeline.<br><br>\
 Note: make sure to add all your timeline events before drawing the timeline with <span class='inline_code'>makeTimeline(..options..)</span>.<br><br>\
 After drawing the timeline for the first time, you can now change the colours of the timeline and use it to keep track of progress if desired.<br>\
@@ -107,6 +109,158 @@ lmtn.setProgress(eventIndex)"
 $(section2).css({
   color: "rgb(92, 81, 129)",
   fontWeight: 400,
+  fontSize: "21pt",
   marginBottom: "15px"
 })
 section2.textContent = "API"
+
+const par3 = document.createElement("h2")
+div3.append(par3)
+$(par3).css({
+  color: "rgb(80, 80, 80)",
+  fontWeight: 400
+})
+par3.textContent = "Constructors"
+
+const par4 = document.createElement("h3")
+div3.append(par4)
+$(par4).css({
+  color: "rgb(100, 100, 100)",
+  fontWeight: 400,
+  fontSize: "16pt",
+  marginLeft: "10px",
+  marginTop: "10px"
+})
+par4.textContent = "Limitene()"
+
+const par5 = document.createElement("p")
+div3.append(par5)
+par5.style.marginTop = "10px"
+par5.innerHTML = "Creates a Limitene instance with an initially empty collection of events.<br>\
+This constructor takes no arguments—its only purpose is to initialize the private variables needed to build and store a timeline."
+
+const par6 = document.createElement("h2")
+div3.append(par6)
+$(par6).css({
+  color: "rgb(80, 80, 80)",
+  fontWeight: 400,
+  marginTop: "50px"
+})
+par6.textContent = "Methods"
+
+const par7 = document.createElement("h3")
+div3.append(par7)
+$(par7).css({
+  color: "rgb(100, 100, 100)",
+  fontWeight: 400,
+  fontSize: "16pt",
+  marginLeft: "10px",
+  marginTop: "10px"
+})
+par7.textContent = "makeEvent(time, title, desc, img)"
+
+const par8 = document.createElement("p")
+div3.append(par8)
+par8.style.marginTop = "10px"
+par8.innerHTML = "Creates a new TimelineEvent object that represents an event in the Limitene timeline.<br><br>\
+time  -  the time/date associated with this event<br>\
+title  -  the 'title' of the event<br>\
+desc  -  a description of the event<br>\
+img  -  the path to an image/icon associated with this event<br><br>\
+Any one of these parameters can be passed in as null."
+
+const par9 = document.createElement("h3")
+div3.append(par9)
+$(par9).css({
+  color: "rgb(100, 100, 100)",
+  fontWeight: 400,
+  fontSize: "16pt",
+  marginLeft: "10px",
+  marginTop: "40px"
+})
+par9.textContent = "makeTimeline(container, direction, imgDisplay, displayOptions)"
+
+const table = document.createElement("table")
+div3.append(table)
+table.innerHTML = "<tr><th>Property</th><th>Default</th><th>Type</th><th>Description</th></tr>\
+<tr><td>container</td><td>document.body</td><td>Object</td><td>The container in which the timeline will be drawn.</td></tr>\
+<tr><td>direction</td><td>'horizontal'</td><td>String</td><td>The direction in which the timeline will follow.\
+<br>Choose between:<ul><li>'horizontal'</li><li>'vertical'</li></ul></td></tr>\
+<tr><td>imgDisplay</td><td>'top' if direction == 'horizontal'<br>'left' if direction == 'vertical'</td><td>String</td><td>Defines which side of the timeline<br>the images and text will be drawn.\
+<br><br>If you choose direction = 'horizontal',<br>you must choose between:<ul><li>'top'</li><li>'bottom'</li><li>'alternate'</li></ul><br>\
+If you choose direction = 'vertical',<br>you must choose between:<ul><li>'left'</li><li>'right'</li><li>'alternate'</li></ul></td></tr>\
+<tr><td>displayOptions</td><td>[true, true]</td><td>Array of bool</td><td>Allows you to choose whether or not<br>you want event times and/or event titles to be displayed on the timeline. \
+<br>(They will still appear in the description<br>box for the event if they exist).<br>\
+<br><ul class='shifted_ul'><li>[true, true] - both times and titles will be on the timeline</li>\
+<li>[true, false] - times are displayed, titles are not</li>\
+<li>[false, true] - titles are displayed, times are not</li>\
+<li>[false, false] - neither times nor titles are displayed</li></ul></td></tr>"
+
+const par10 = document.createElement("h3")
+div3.append(par10)
+$(par10).css({
+  color: "rgb(100, 100, 100)",
+  fontWeight: 400,
+  fontSize: "16pt",
+  marginLeft: "10px",
+  marginTop: "60px"
+})
+par10.textContent = "setInactiveColour(rgbColour)"
+
+const par11 = document.createElement("p")
+div3.append(par11)
+par11.style.marginTop = "10px"
+par11.innerHTML = "Sets the colour of the Limitene timeline's edges and inactive nodes (when they aren't being hovered over or aren't selected) to rgbColour.<br>\
+rgbColour must be a String that takes the form (int, int, int), where each integer is greater than or equal to 0 and less than or equal to 255."
+
+const par12 = document.createElement("h3")
+div3.append(par12)
+$(par12).css({
+  color: "rgb(100, 100, 100)",
+  fontWeight: 400,
+  fontSize: "16pt",
+  marginLeft: "10px",
+  marginTop: "40px"
+})
+par12.textContent = "setActiveColour(rgbColour)"
+
+const par13 = document.createElement("p")
+div3.append(par13)
+par13.style.marginTop = "10px"
+par13.innerHTML = "Sets the colour of the Limitene timeline's nodes when they are being hovered over or are selected, to rgbColour.<br>\
+rgbColour must be a String that takes the form (int, int, int), where each integer is greater than or equal to 0 and less than or equal to 255."
+
+const par14 = document.createElement("h3")
+div3.append(par14)
+$(par14).css({
+  color: "rgb(100, 100, 100)",
+  fontWeight: 400,
+  fontSize: "16pt",
+  marginLeft: "10px",
+  marginTop: "40px"
+})
+par14.textContent = "setGradient(rgbColour)"
+
+const par15 = document.createElement("p")
+div3.append(par15)
+par15.style.marginTop = "10px"
+par15.innerHTML = "Creates a gradient from rgbColour and applies it to the edges and inactive nodes of the timeline.<br>\
+The active node colour is set to the inverse of the inactive node colour.<br>\
+rgbColour must be a String that takes the form (int, int, int), where each integer is greater than or equal to 0 and less than or equal to 255."
+
+const par16 = document.createElement("h3")
+div3.append(par16)
+$(par16).css({
+  color: "rgb(100, 100, 100)",
+  fontWeight: 400,
+  fontSize: "16pt",
+  marginLeft: "10px",
+  marginTop: "40px"
+})
+par16.textContent = "setProgress(eventIndex)"
+
+const par17 = document.createElement("p")
+div3.append(par17)
+par17.style.marginTop = "10px"
+par17.innerHTML = "Sets the progress of the Limitene timeline to the event at eventIndex. \
+eventIndex can range from -1 to the last event's index.<br>eventIndex = -1 turns the timeline into a progress tracker with no nodes shown as complete."
