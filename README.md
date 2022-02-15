@@ -1,5 +1,5 @@
 # Limitene.js
-### Library for creating timelines, created by Yingjia Liu for CSC209H1 F2021 Individual Project
+### Library for creating timelines, created by Yingjia Liu for CSC309H1 F2021 Individual Project
 
 - Link to landing page of deployed web app: (https://limitene.herokuapp.com/)
 - Link to documentation: (https://limitene.herokuapp.com/documentation.html)
